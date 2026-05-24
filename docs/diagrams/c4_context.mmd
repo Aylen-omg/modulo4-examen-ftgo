@@ -1,0 +1,26 @@
+C4Context
+    title FTGO – Diagrama de Contexto (Nivel 1)
+
+    Person(consumer,    "Consumidor",     "Ordena comida por app móvil o web")
+    Person(restaurant,  "Restaurante",    "Gestiona tickets de cocina y menús")
+    Person(courier,     "Courier",        "Acepta y completa entregas a domicilio")
+    Person(backoffice,  "Empleado FTGO",  "Soporte, finanzas y operaciones internas")
+
+    System(ftgo, "FTGO Platform", "Plataforma marketplace de delivery de comida a domicilio. Conecta consumidores, restaurantes y couriers.")
+
+    System_Ext(stripe,  "Stripe",           "Procesamiento de pagos con cumplimiento PCI-DSS")
+    System_Ext(maps,    "Google Maps",      "Geocoding de direcciones y cálculo de rutas optimizadas")
+    System_Ext(notif,   "SendGrid/Twilio",  "Envío de notificaciones transaccionales por email y SMS")
+    System_Ext(legacy,  "Monolito Legacy",  "Java WAR actual — CAP-01 Consumer y CAP-02 Restaurant (parcial) hasta extracción fases 2-3. Coexistencia Strangler Fig [ADR 0001]")
+
+    Rel(consumer,   ftgo,   "Ordena comida, consulta estado y rastrea entregas",    "iOS/Android")
+    Rel(restaurant, ftgo,   "Acepta o rechaza tickets y gestiona menú",             "HTTPS/Browser")
+    Rel(courier,    ftgo,   "Acepta entregas y actualiza posición GPS",             "iOS/Android")
+    Rel(backoffice, ftgo,   "Monitorea operaciones y resuelve incidentes",          "HTTPS/Browser")
+
+    Rel(ftgo, stripe,  "Procesa cobros de pedidos y reembolsos",                   "JSON/HTTPS")
+    Rel(ftgo, maps,    "Geocoding de direcciones y cálculo de rutas de couriers",   "JSON/HTTPS")
+    Rel(ftgo, notif,   "Envía confirmaciones, alertas y recibos",                  "JSON/HTTPS")
+    Rel(ftgo, legacy,  "Delega funciones aún no migradas (Strangler Fig)",          "JSON/HTTPS REST")
+
+    UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")

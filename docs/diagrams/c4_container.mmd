@@ -1,0 +1,71 @@
+C4Container
+    title FTGO – Diagrama de Contenedores (Nivel 2)
+
+    Person(consumer,    "Consumidor",     "Ordena comida por app móvil o web")
+    Person(restaurant,  "Restaurante",    "Gestiona tickets de cocina y menús")
+    Person(courier,     "Courier",        "Acepta y completa entregas")
+    Person(backoffice,  "Empleado FTGO",  "Soporte, finanzas y operaciones")
+
+    System_Ext(stripe,  "Stripe",           "Procesamiento de pagos PCI-DSS")
+    System_Ext(maps,    "Google Maps",      "Geocoding y cálculo de rutas")
+    System_Ext(notif,   "SendGrid/Twilio",  "Notificaciones email y SMS")
+
+    System_Boundary(ftgo, "FTGO Platform") {
+
+        Container(mobile,    "Mobile App",       "React Native",          "App del consumidor y del courier. Ordena comida y rastrea entregas en tiempo real.")
+        Container(webadmin,  "Web Admin",         "React",                 "Dashboard para restaurantes (tickets y menú) y para empleados FTGO (reportes y operaciones).")
+        Container(gateway,   "API Gateway",       "Spring Cloud Gateway",  "Punto de entrada único. Autenticación, rate limiting y enrutamiento de requests a servicios internos o al monolito legacy.")
+
+        Container(order,     "Order Service",     "Java 17/Spring Boot",   "CAP-03 Order Taking. Crea y gestiona el ciclo de vida del pedido. Publica eventos de dominio en Kafka.")
+        Container(kitchen,   "Kitchen Service",   "Java 17/Spring Boot",   "CAP-04 Order Fulfillment. Gestiona tickets de cocina: PENDING_ACCEPTANCE → ACCEPTED → PREPARING → READY.")
+        Container(delivery,  "Delivery Service",  "Java 17/Spring Boot",   "CAP-05 Delivery. Asigna couriers, calcula rutas con Google Maps y gestiona tracking en tiempo real.")
+        Container(billing,   "Billing Service",   "Java 17/Spring Boot",   "CAP-06 Billing & Accounting. Cobra al consumidor vía Stripe, calcula comisiones y registra payouts.")
+        Container(notifSvc,  "Notification Svc",  "Node.js",               "CAP-07 Notifications. Consume eventos de Kafka y envía email/SMS/push vía SendGrid y Twilio.")
+
+        Container(observability, "Observability Stack", "OpenTelemetry + Grafana Tempo", "Distributed tracing y correlation ID end-to-end [NFR-06, PRD §4]. Retención de trazas ≥ 30 días.")
+
+        ContainerDb(orderDb, "Order DB",          "PostgreSQL 15",         "Base de datos del Order Service. Almacena pedidos, ítems y estado del ciclo de vida (DB-per-service [ADR 0003]).")
+        ContainerQueue(kafka,"Event Broker",      "Apache Kafka",          "Bus de eventos asíncronos. Tópicos: OrderCreated, PaymentConfirmed, TicketAccepted, CourierAssigned, etc. [ADR 0002]")
+
+        Container(monolito,  "Monolito Legacy",   "Java WAR / Tomcat",     "CAP-01 Consumer Management (auth, perfiles) y CAP-02 Restaurant Management parcial (catálogo legacy). Funciones no migradas. Strangler Fig [ADR 0001] fases 2-3.")
+    }
+
+    %% ── Actores → Clientes ──────────────────────────────────────────────────
+    Rel(consumer,    mobile,    "Ordena comida y rastrea entrega",    "iOS/Android")
+    Rel(restaurant,  webadmin,  "Gestiona tickets y menú",            "HTTPS/Browser")
+    Rel(courier,     mobile,    "Acepta entregas y actualiza GPS",    "iOS/Android")
+    Rel(backoffice,  webadmin,  "Monitorea operaciones",              "HTTPS/Browser")
+
+    %% ── Clientes → API Gateway ──────────────────────────────────────────────
+    Rel(mobile,    gateway, "Requests de consumidor y courier", "JSON/HTTPS REST")
+    Rel(webadmin,  gateway, "Requests de restaurante y admin",  "JSON/HTTPS REST")
+
+    %% ── API Gateway → Servicios internos ────────────────────────────────────
+    Rel(gateway, order,    "Enruta creación y consulta de pedidos",  "JSON/HTTPS REST")
+    Rel(gateway, delivery, "Enruta consultas de tracking en tiempo real", "JSON/HTTPS REST")
+    Rel(gateway, monolito, "Delega requests de funciones no migradas (Strangler Fig)", "JSON/HTTPS REST")
+
+    %% ── Order Service → persistencia y eventos ──────────────────────────────
+    Rel(order, orderDb, "Lee y escribe estado del pedido",   "JDBC/SQL")
+    Rel(order, kafka,   "Publica OrderCreated",              "Kafka protocol async")
+
+    %% ── Consumidores Kafka ──────────────────────────────────────────────────
+    Rel(kitchen,   kafka, "Consume OrderCreated — publica TicketAccepted/TicketReady",    "Kafka protocol async")
+    Rel(billing,   kafka, "Consume OrderCreated — publica PaymentConfirmed/PaymentFailed", "Kafka protocol async")
+    Rel(delivery,  kafka, "Consume TicketReady — publica CourierAssigned/Delivered",       "Kafka protocol async")
+    Rel(notifSvc,  kafka, "Consume todos los eventos de estado del pedido",                "Kafka protocol async")
+
+    %% ── Integraciones con sistemas externos ─────────────────────────────────
+    Rel(billing,   stripe, "Autoriza y captura cobros; procesa reembolsos",              "JSON/HTTPS")
+    Rel(delivery,  maps,   "Geocoding de direcciones y cálculo de rutas optimizadas",   "JSON/HTTPS")
+    Rel(notifSvc,  notif,  "Envía email (SendGrid) y SMS/push (Twilio)",                "JSON/HTTPS")
+
+    %% ── Observabilidad [NFR-06] ─────────────────────────────────────────────
+    Rel(gateway,     observability, "Propaga correlation ID (HTTP headers)",     "OpenTelemetry")
+    Rel(order,       observability, "Emite spans de ciclo de vida del pedido",   "OpenTelemetry")
+    Rel(kitchen,     observability, "Emite spans de tickets de cocina",        "OpenTelemetry")
+    Rel(billing,     observability, "Emite spans de cobros y reembolsos",      "OpenTelemetry")
+    Rel(delivery,    observability, "Emite spans de asignación y tracking",      "OpenTelemetry")
+    Rel(notifSvc,    observability, "Emite spans de notificaciones enviadas",    "OpenTelemetry")
+
+    UpdateLayoutConfig($c4ShapeInRow="4", $c4BoundaryInRow="1")
