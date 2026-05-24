@@ -18,13 +18,18 @@ modulo4-examen-ftgo/
 ├── README.md                               ← este archivo
 ├── docs/
 │   ├── PRD.md                              ← Product Requirements Document ligero
-│   ├── FSD.md                              ← Functional Specification Document (7 UCs con GWT)
+│   ├── FSD.md                              ← Functional Specification Document (7 UCs + matrices CAP)
+│   ├── TRAZABILIDAD.md                     ← Matriz Brief→PRD→FSD→ADR→C4 (skill trazabilidad)
 │   ├── adr/
 │   │   ├── 0001-estilo-arquitectonico.md   ← ADR: estilo arquitectónico (Strangler Fig elegido)
-│   │   └── 0002-ipc-estrategia.md          ← ADR: estrategia IPC (híbrido REST + Kafka elegido)
-│   └── diagrams/
-│       ├── c4_context.mmd                  ← Diagrama C4 Nivel 1 — Context
-│       └── c4_container.mmd                ← Diagrama C4 Nivel 2 — Container
+│   │   ├── 0002-ipc-estrategia.md          ← ADR: estrategia IPC (híbrido REST + Kafka elegido)
+│   │   └── 0003-estrategia-datos.md        ← ADR: estrategia de datos (DB-per-service)
+│   ├── diagrams/
+│   │   ├── c4_context.mmd                  ← Diagrama C4 Nivel 1 — Context
+│   │   └── c4_container.mmd                ← Diagrama C4 Nivel 2 — Container
+│   └── skills/
+│       └── trazabilidad/
+│           └── SKILL.md                    ← Skill Cursor: genera TRAZABILIDAD.md
 └── prompts_mejorados/
     ├── prd_mejorado.md                     ← Prompt mejorado B.1 — genera PRD
     ├── fsd_mejorado.md                     ← Prompt mejorado B.2 — genera FSD
@@ -53,11 +58,15 @@ ADRs (docs/adr/)
     │  decisiones arquitectónicas fundamentadas en NFRs del PRD
     │  ADR 0001: estilo → Strangler Fig
     │  ADR 0002: IPC → REST síncrono + Kafka async (híbrido)
+    │  ADR 0003: datos → Database-per-service
     ↓
 C4 (docs/diagrams/)
     │  arquitectura visual coherente con los ADRs
     │  Nivel 1: FTGO como caja negra + actores + externos
-    │  Nivel 2: 11 contenedores + 18 relaciones con protocolo
+    │  Nivel 2: 12 contenedores + 24 relaciones con protocolo
+    ↓
+TRAZABILIDAD (docs/TRAZABILIDAD.md)
+    │  auditoría end-to-end generada por docs/skills/trazabilidad/SKILL.md
 ```
 
 ---
@@ -102,7 +111,18 @@ Cada ADR evalúa exactamente 3 opciones con 5 dimensiones (descripción, pros, c
 @prompts_mejorados/c4_mejorado.md
 ```
 
-Genera `docs/diagrams/c4_context.mmd` (Nivel 1) y `docs/diagrams/c4_container.mmd` (Nivel 2) en sintaxis Mermaid C4 válida. El Nivel 2 incluye los 11 contenedores de FTGO con las 18 relaciones, cada una con tecnología + protocolo, coherente con ADR 0001 (Monolito Legacy presente) y ADR 0002 (Kafka + REST diferenciados).
+Genera `docs/diagrams/c4_context.mmd` (Nivel 1) y `docs/diagrams/c4_container.mmd` (Nivel 2) en sintaxis Mermaid C4 válida. El Nivel 2 incluye 12 contenedores (incl. Observability Stack [NFR-06]) con relaciones tech + protocolo, coherente con ADR 0001 (Monolito Legacy), ADR 0002 (Kafka + REST) y ADR 0003 (DB-per-service).
+
+### Trazabilidad
+
+```
+@docs/skills/trazabilidad/SKILL.md
+@docs/PRD.md @docs/FSD.md
+@docs/adr/0001-estilo-arquitectonico.md @docs/adr/0002-ipc-estrategia.md
+@docs/diagrams/c4_context.mmd @docs/diagrams/c4_container.mmd
+```
+
+Genera o actualiza `docs/TRAZABILIDAD.md` con matrices Brief→PRD→FSD→ADR→C4, brechas y semáforo por capa.
 
 ---
 
@@ -112,12 +132,10 @@ Indicadores medidos comparando el prompt semilla v0.1 (Anexo B) contra el prompt
 
 | Prompt | Indicador | Semilla v0.1 | Mejorado v0.2 | Δ |
 |--------|-----------|:------------:|:-------------:|:-:|
-| PRD | % checkpoints completos (21 pts: 5 secciones + 8 NFRs + 7 CAPs + Strangler Fig) | ~52 % | ~97 % | **+45 %** |
-| FSD | % UCs con 7 campos completos + GWT con estados concretos del dominio | ~40 % | 100 % | **+60 %** |
-| ADR | % dimensiones cubiertas por opción (3 opciones × 5 dim. = 15 pts) | ~42 % | 100 % | **+58 %** |
-| C4  | % relaciones del Nivel 2 con tecnología + protocolo declarados (18 total) | ~25 % | 100 % | **+75 %** |
-
-> ⚠️ Reemplaza los valores de la columna "Semilla v0.1" con tus mediciones reales al ejecutar las 3 corridas de cada semilla original del Anexo B. Los valores de "Mejorado v0.2" se obtienen con los prompts de este repositorio.
+| PRD | % checkpoints completos (21 pts) | 54 % | 100 % | **+46 %** |
+| FSD | % checkpoints completos (18 pts) | 44 % | 100 % | **+56 %** |
+| ADR | % checkpoints completos (16 pts) | 46 % | 100 % | **+54 %** |
+| C4  | % checkpoints completos (15 pts) | 27 % | 100 % | **+73 %** |
 
 ---
 
@@ -129,13 +147,16 @@ Indicadores medidos comparando el prompt semilla v0.1 (Anexo B) contra el prompt
 | 2 | FSD ligero (7 UCs con Given/When/Then) | `docs/FSD.md` | ✅ |
 | 3 | ADR 1 — Estilo arquitectónico (Strangler Fig) | `docs/adr/0001-estilo-arquitectonico.md` | ✅ |
 | 4 | ADR 2 — Estrategia IPC (REST + Kafka híbrido) | `docs/adr/0002-ipc-estrategia.md` | ✅ |
-| 5 | Diagrama C4 Nivel 1 — Context | `docs/diagrams/c4_context.mmd` | ✅ |
-| 6 | Diagrama C4 Nivel 2 — Container | `docs/diagrams/c4_container.mmd` | ✅ |
-| 7 | Prompt mejorado PRD (semilla B.1) | `prompts_mejorados/prd_mejorado.md` | ✅ |
-| 8 | Prompt mejorado FSD (semilla B.2) | `prompts_mejorados/fsd_mejorado.md` | ✅ |
-| 9 | Prompt mejorado ADR (semilla B.3) | `prompts_mejorados/adr_mejorado.md` | ✅ |
-| 10 | Prompt mejorado C4 (semilla B.4) | `prompts_mejorados/c4_mejorado.md` | ✅ |
-| 11 | README ejecutable | `README.md` | ✅ |
+| 5 | ADR 3 — Estrategia de datos (DB-per-service) | `docs/adr/0003-estrategia-datos.md` | ✅ |
+| 6 | Diagrama C4 Nivel 1 — Context | `docs/diagrams/c4_context.mmd` | ✅ |
+| 7 | Diagrama C4 Nivel 2 — Container | `docs/diagrams/c4_container.mmd` | ✅ |
+| 8 | Matriz de trazabilidad | `docs/TRAZABILIDAD.md` | ✅ |
+| 9 | Skill trazabilidad Cursor | `docs/skills/trazabilidad/SKILL.md` | ✅ |
+| 10 | Prompt mejorado PRD (semilla B.1) | `prompts_mejorados/prd_mejorado.md` | ✅ |
+| 11 | Prompt mejorado FSD (semilla B.2) | `prompts_mejorados/fsd_mejorado.md` | ✅ |
+| 12 | Prompt mejorado ADR (semilla B.3) | `prompts_mejorados/adr_mejorado.md` | ✅ |
+| 13 | Prompt mejorado C4 (semilla B.4) | `prompts_mejorados/c4_mejorado.md` | ✅ |
+| 14 | README ejecutable | `README.md` | ✅ |
 
 ---
 

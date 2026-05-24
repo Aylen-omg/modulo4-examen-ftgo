@@ -11,7 +11,7 @@ C4Context
     System_Ext(stripe,  "Stripe",           "Procesamiento de pagos con cumplimiento PCI-DSS")
     System_Ext(maps,    "Google Maps",      "Geocoding de direcciones y cálculo de rutas optimizadas")
     System_Ext(notif,   "SendGrid/Twilio",  "Envío de notificaciones transaccionales por email y SMS")
-    System_Ext(legacy,  "Monolito Legacy",  "Sistema Java WAR actual — coexiste con la plataforma nueva durante la migración Strangler Fig [ADR 0001]")
+    System_Ext(legacy,  "Monolito Legacy",  "Java WAR actual — CAP-01 Consumer y CAP-02 Restaurant (parcial) hasta extracción fases 2-3. Coexistencia Strangler Fig [ADR 0001]")
 
     Rel(consumer,   ftgo,   "Ordena comida, consulta estado y rastrea entregas",    "iOS/Android")
     Rel(restaurant, ftgo,   "Acepta o rechaza tickets y gestiona menú",             "HTTPS/Browser")

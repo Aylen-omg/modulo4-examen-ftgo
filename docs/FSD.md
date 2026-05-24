@@ -15,7 +15,7 @@
 
 ## 1. Introducción
 
-Este FSD (Functional Specification Document) formaliza los 7 casos de uso que implementan las capacidades de negocio declaradas en `docs/PRD.md`. Su propósito es traducir los requisitos del PRD en comportamientos observables y verificables, expresados en formato BDD (Given/When/Then), para servir de entrada a los ADRs arquitectónicos y los diagramas C4. Los UC-01 a UC-03 derivan directamente de las 3 user stories semilla del brief [Brief §A.5]; los UC-04 y UC-05 se derivan de capacidades y NFRs del PRD; los UC-06 y UC-07 se derivan de los UCs adicionales señalados explícitamente como derivables en [Brief §A.5]. Ningún UC ha sido inventado fuera de estas fuentes [Brief §A.6].
+Este FSD (Functional Specification Document) formaliza **exactamente 7 casos de uso** que implementan las capacidades de negocio declaradas en `docs/PRD.md`, conforme al alcance del FSD ligero [Brief §A.6]. Los UC-01 a UC-03 derivan de las 3 user stories semilla [Brief §A.5]; los UC-04 a UC-07 derivan de capacidades del PRD y de los UCs adicionales señalados como derivables en [Brief §A.5]. Las siete capacidades del PRD (CAP-01 a CAP-07) quedan cubiertas mediante UCs dedicados, precondiciones compartidas o la matriz transversal de notificaciones (§2.2). Ningún UC ha sido inventado fuera de estas fuentes [Brief §A.6].
 
 ---
 
@@ -30,6 +30,40 @@ Este FSD (Functional Specification Document) formaliza los 7 casos de uso que im
 | UC-05 | Tracking en tiempo real del consumidor  | Consumidor       | CAP-05 — Delivery               | Derivado de NFR-02 [PRD §4] + CAP-05 [PRD §3]              |
 | UC-06 | Cancelar pedido por el consumidor       | Consumidor       | CAP-03 — Order Taking           | Derivado de UCs adicionales derivables [Brief §A.5]         |
 | UC-07 | Gestionar menú del restaurante          | Restaurante      | CAP-02 — Restaurant Management  | Derivado de UCs adicionales derivables [Brief §A.5] + CAP-02 [PRD §3] |
+
+### 2.1 Matriz de cobertura CAP ↔ UC
+
+Trazabilidad explícita de las 7 capacidades del PRD [PRD §3] frente a los 7 UCs de este FSD ligero [Brief §A.6]:
+
+| CAP PRD | UC(s) | Modo de cobertura | Evidencia |
+|---------|-------|-------------------|-----------|
+| CAP-01 Consumer Management | UC-01 (precondiciones) | Infraestructura compartida: sesión autenticada, direcciones y métodos de pago registrados antes de tomar pedido | UC-01 precondiciones §3; rutas auth en monolito vía API Gateway [C4 L2 `Rel(gateway, monolito)`] |
+| CAP-02 Restaurant Management | UC-07 | UC dedicado — gestión de menú (alta, edición, desactivación) | UC-07 §3; tickets de cocina vía UC-02 |
+| CAP-03 Order Taking | UC-01, UC-06 | UC dedicados — tomar y cancelar pedido | US-01 [Brief §A.5]; UC-06 [Brief §A.5] |
+| CAP-04 Order Fulfillment / Kitchen | UC-02 | UC dedicado — aceptar/rechazar ticket | US-02 [Brief §A.5] |
+| CAP-05 Delivery | UC-03, UC-05 | UC dedicados — asignación courier y tracking | US-03 [Brief §A.5]; NFR-02 [PRD §4] |
+| CAP-06 Billing & Accounting | UC-04 | UC dedicado — cobro async vía Stripe | CAP-06 [PRD §3]; Richardson Cap. 3 |
+| CAP-07 Notifications | UC-01…UC-06 (transversal) | Side-effects documentados — ver matriz §2.2 | CAP-07 [PRD §3]; `Notification Svc` [C4 L2] |
+
+### 2.2 Matriz transversal — CAP-07 Notifications
+
+CAP-07 es capacidad **satélite** [PRD §3]: su degradación no bloquea el flujo principal. Los eventos que disparan notificaciones (SendGrid/Twilio/push) quedan trazados por UC:
+
+| Evento / estado | UC origen | Destinatario | Canal | Paso FSD |
+|-----------------|-----------|--------------|-------|----------|
+| Pedido creado (`PENDING_PAYMENT`) | UC-01 | Consumidor | Push / email | Flujo principal paso 9 |
+| Ticket pendiente | UC-02 | Restaurante | Push dashboard | Flujo principal paso 1 |
+| Pedido aceptado / rechazado | UC-02 | Consumidor | Push / SMS | Flujo principal paso 7; FA-01 |
+| Courier asignado | UC-03 | Consumidor | Push | Flujo principal paso 8 → trigger UC-05 |
+| Pago rechazado | UC-04 | Consumidor | Push / email | FA-01 |
+| Cancelación confirmada | UC-06 | Consumidor | Push / email | Flujo principal paso 8 |
+| Cambio estado entrega (`PICKED_UP`, `DELIVERED`) | UC-05 | Consumidor | Push | FA-03 |
+
+**Given/When/Then representativo (CAP-07):**
+
+- **Given:** el pedido acaba de pasar a estado `APPROVED` tras UC-04 y el consumidor tiene notificaciones push activas.
+- **When:** el sistema publica el evento `PaymentConfirmed` consumido por CAP-07.
+- **Then:** el consumidor recibe en ≤ 5 s la notificación "Pago confirmado — tu pedido está en preparación" vía SendGrid/Twilio [NFR-01 UX percibida].
 
 ---
 
@@ -310,4 +344,4 @@ Este FSD (Functional Specification Document) formaliza los 7 casos de uso que im
 
 ---
 
-*Trazabilidad: los 7 UCs de este FSD derivan exclusivamente de las US semilla [Brief §A.5], los UCs adicionales señalados como derivables [Brief §A.5], las capacidades del PRD [PRD §3] y los NFRs del PRD [PRD §4], con referencias a Richardson donde aplica. Ningún UC ha sido inventado fuera de estas fuentes [Brief §A.6].*
+*Trazabilidad: los 7 UCs cubren las 7 CAPs del PRD mediante UCs dedicados (§2), precondiciones compartidas (CAP-01) o matriz transversal (CAP-07, §2.2). Fuentes: US semilla [Brief §A.5], capacidades [PRD §3], NFRs [PRD §4], Richardson donde aplica. Ningún UC inventado fuera del brief [Brief §A.6].*
