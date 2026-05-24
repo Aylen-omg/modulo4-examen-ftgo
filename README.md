@@ -34,13 +34,13 @@ modulo4-examen-ftgo/
 |---|-----------|------|--------|
 | 1 | PRD ligero | `docs/PRD.md` | ✅ |
 | 2 | FSD ligero (7 UCs con GWT) | `docs/FSD.md` | ✅ |
-| 3 | ADR 1 — Estilo arquitectónico | `docs/adr/0001-estilo-arquitectonico.md` | ⏳ |
-| 4 | ADR 2 — Estrategia IPC | `docs/adr/0002-ipc-estrategia.md` | ⏳ |
-| 5 | Diagrama C4 nivel 1 (Context) | `docs/diagrams/c4_context.mmd` | ⏳ |
-| 6 | Diagrama C4 nivel 2 (Container) | `docs/diagrams/c4_container.mmd` | ⏳ |
+| 3 | ADR 1 — Estilo arquitectónico | `docs/adr/0001-estilo-arquitectonico.md` | ✅ |
+| 4 | ADR 2 — Estrategia IPC | `docs/adr/0002-ipc-estrategia.md` | ✅ |
+| 5 | Diagrama C4 nivel 1 (Context) | `docs/diagrams/c4_context.mmd` | ✅ |
+| 6 | Diagrama C4 nivel 2 (Container) | `docs/diagrams/c4_container.mmd` | ✅ |
 | 7 | Prompt mejorado PRD | `prompts_mejorados/prd_mejorado.md` | ✅ |
 | 8 | Prompt mejorado FSD | `prompts_mejorados/fsd_mejorado.md` | ✅ |
-| 9 | Prompt mejorado ADR | `prompts_mejorados/adr_mejorado.md` | ⏳ |
+| 9 | Prompt mejorado ADR | `prompts_mejorados/adr_mejorado.md` | ✅ |
 | 10 | Prompt mejorado C4 | `prompts_mejorados/c4_mejorado.md` | ⏳ |
 
 ---
