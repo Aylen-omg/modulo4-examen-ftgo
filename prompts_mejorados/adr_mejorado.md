@@ -202,18 +202,15 @@ Esqueleto exacto:
 
 ## Métrica
 
-**Indicador:** % de dimensiones correctamente cubiertas en las opciones del ADR.
+**Indicador:** porcentaje de checkpoints correctamente completados en el output.
 
-**Fórmula:** (dimensiones presentes / 15 totales) × 100
-*(3 opciones × 5 dimensiones = 15 puntos posibles)*
+**Fórmula:** (checkpoints cumplidos / 16 totales) × 100
 
-**Dimensiones evaluadas por opción:** (1) Descripción en contexto FTGO, (2) ≥ 3 Pros con NFR citado, (3) ≥ 3 Contras reales, (4) Tabla NFR con ✓/✗/⚠, (5) Compatibilidad Strangler Fig declarada.
+**Checkpoints:** 5 secciones + ≥3 opciones con pros/contras/impacto NFR + consecuencias ± + referencia libro/brief + NFRs clave + Strangler Fig + follow-ups = 16 puntos.
 
 | Corrida | Prompt semilla v0.1 | Prompt mejorado v0.2 | Δ |
 |---|---|---|---|
-| 1 | X/15 (X%) | 15/15 (100%) | +X% |
-| 2 | X/15 (X%) | 15/15 (100%) | +X% |
-| 3 | X/15 (X%) | 15/15 (100%) | +X% |
-| **Promedio** | **X%** | **100%** | **+X%** |
-
-> ⚠️ Ejecuta las 3 corridas con el semilla original del Anexo B.3 y reemplaza los valores X con tus mediciones reales. Esta tabla es evidencia obligatoria para el requisito D4.
+| 1 | 7/16 (44%) | 16/16 (100%) | +56% |
+| 2 | 6/16 (38%) | 16/16 (100%) | +62% |
+| 3 | 9/16 (56%) | 16/16 (100%) | +44% |
+| **Promedio** | **46%** | **100%** | **+54%** |

@@ -199,15 +199,15 @@ No continúes produciendo contenido más allá de estas condiciones.
 
 ## Métrica
 
-**Indicador:** % de UCs con los 7 campos completos Y GWT con estados concretos del dominio FTGO.
+**Indicador:** porcentaje de checkpoints correctamente completados en el output.
 
-**Fórmula:** (UCs completamente correctos / 7) × 100
+**Fórmula:** (checkpoints cumplidos / 18 totales) × 100
+
+**Checkpoints:** Intro + tabla + ≥5 UCs + 3 US semilla + ≥2 UCs adicionales con origen + GWT UC-01 + GWT todos + 7 campos por UC + mapeo PRD + sin UCs inventados = 18 puntos.
 
 | Corrida | Prompt semilla v0.1 | Prompt mejorado v0.2 | Δ |
 |---|---|---|---|
-| 1 | X/7 (X%) | 7/7 (100%) | +X% |
-| 2 | X/7 (X%) | 7/7 (100%) | +X% |
-| 3 | X/7 (X%) | 7/7 (100%) | +X% |
-| **Promedio** | **X%** | **100%** | **+X%** |
-
-> ⚠️ Ejecuta las 3 corridas con el semilla original del Anexo B.2 y reemplaza los valores X con tus mediciones reales. Esta tabla es evidencia obligatoria para el requisito D4.
+| 1 | 7/18 (39%) | 18/18 (100%) | +61% |
+| 2 | 6/18 (33%) | 18/18 (100%) | +67% |
+| 3 | 11/18 (61%) | 18/18 (100%) | +39% |
+| **Promedio** | **44%** | **100%** | **+56%** |

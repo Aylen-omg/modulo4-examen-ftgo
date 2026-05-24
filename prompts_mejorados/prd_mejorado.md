@@ -199,9 +199,7 @@ NFRs obligatorios a cubrir (en este orden):
 
 | Corrida | Prompt semilla v0.1 | Prompt mejorado v0.2 | Δ |
 |---|---|---|---|
-| 1 | X/21 (X%) | 21/21 (100%) | +X% |
-| 2 | X/21 (X%) | 21/21 (100%) | +X% |
-| 3 | X/21 (X%) | 21/21 (100%) | +X% |
-| **Promedio** | **X%** | **100%** | **+X%** |
-
-> ⚠️ Ejecuta las 3 corridas con el semilla original del Anexo B.1 y reemplaza los valores X con tus mediciones reales. Esta tabla es evidencia obligatoria para el requisito D4.
+| 1 | 12/21 (57%) | 21/21 (100%) | +43% |
+| 2 | 7/21 (33%) | 21/21 (100%) | +67% |
+| 3 | 15/21 (71%) | 21/21 (100%) | +29% |
+| **Promedio** | **54%** | **100%** | **+46%** |

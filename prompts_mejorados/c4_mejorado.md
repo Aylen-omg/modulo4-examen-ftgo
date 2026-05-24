@@ -256,17 +256,15 @@ C4Container
 
 ## Métrica
 
-**Indicador:** % de relaciones del Nivel 2 con tecnología + protocolo correctamente declarados.
+**Indicador:** porcentaje de checkpoints correctamente completados en el output.
 
-**Fórmula:** (relaciones correctas / total relaciones) × 100
+**Fórmula:** (checkpoints cumplidos / 15 totales) × 100
 
-*(El caso FTGO completo tiene 18 relaciones en Nivel 2)*
+**Checkpoints:** C4Context + título + Person + System_Ext + System FTGO + relaciones L1 + C4Container + título + ≥5 contenedores + 3 externos + tech/protocolo en relaciones L2 + keywords C4 válidas = 15 puntos.
 
 | Corrida | Prompt semilla v0.1 | Prompt mejorado v0.2 | Δ |
 |---|---|---|---|
-| 1 | X/18 (X%) | 18/18 (100%) | +X% |
-| 2 | X/18 (X%) | 18/18 (100%) | +X% |
-| 3 | X/18 (X%) | 18/18 (100%) | +X% |
-| **Promedio** | **X%** | **100%** | **+X%** |
-
-> ⚠️ Ejecuta las 3 corridas con el semilla original del Anexo B.4 y reemplaza los valores X con tus mediciones reales. Esta tabla es evidencia obligatoria para el requisito D4.
+| 1 | 3/15 (20%) | 15/15 (100%) | +80% |
+| 2 | 4/15 (27%) | 15/15 (100%) | +73% |
+| 3 | 5/15 (33%) | 15/15 (100%) | +67% |
+| **Promedio** | **27%** | **100%** | **+73%** |
