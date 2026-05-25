@@ -1,0 +1,29 @@
+%% Salida de Semilla B.4 · Corrida C1 · Evaluación: 3/15 (20%)
+%% Checkpoints fallidos: usa graph TD en lugar de C4Context/C4Container,
+%% solo 2 actores, sin System_Ext, sin tech/protocolo en relaciones,
+%% sin ContainerDb ni ContainerQueue, sin Monolito Legacy en L2.
+
+%% ===== NIVEL 1 (Context) =====
+graph TD
+    Consumer[Consumidor]
+    Restaurant[Restaurante]
+    FTGO[FTGO Platform]
+    Stripe[Stripe]
+
+    Consumer -->|Hace pedidos| FTGO
+    Restaurant -->|Gestiona menú| FTGO
+    FTGO -->|Procesa pagos| Stripe
+
+%% ===== NIVEL 2 (Container) =====
+graph LR
+    subgraph FTGO Platform
+        API[API Gateway]
+        OrderSvc[Order Service]
+        DeliverySvc[Delivery Service]
+        DB[(Database)]
+    end
+
+    MobileApp[Mobile App] --> API
+    API --> OrderSvc
+    API --> DeliverySvc
+    OrderSvc --> DB

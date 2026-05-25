@@ -1,0 +1,43 @@
+%% Salida de Semilla B.4 · Corrida C2 · Evaluación: 4/15 (27%)
+%% Checkpoints OK: C4Container en L2 ✓, Título FTGO Platform ✓, ContainerDb ✓, sin servicios en L1 ✓
+%% Checkpoints fallidos: L1 usa graph TD, solo 3 Person, solo 2 System_Ext,
+%% Kafka como Container genérico (no ContainerQueue), Monolito Legacy ausente,
+%% relaciones sin $techn en varias, usa ContainerExt (no estándar).
+
+%% ===== NIVEL 1 (Context) — usa graph TD en vez de C4Context =====
+graph TD
+    Consumer["Consumidor\n[Person]"]
+    Restaurant["Restaurante\n[Person]"]
+    Employee["Empleado FTGO\n[Person]"]
+    FTGOPlatform["FTGO Platform\n[System]"]
+    Stripe["Stripe\n[Sistema Externo]"]
+    GoogleMaps["Google Maps\n[Sistema Externo]"]
+
+    Consumer -->|Pide comida| FTGOPlatform
+    Restaurant -->|Gestiona pedidos| FTGOPlatform
+    Employee -->|Administra la plataforma| FTGOPlatform
+    FTGOPlatform -->|Procesa pagos| Stripe
+    FTGOPlatform -->|Obtiene rutas| GoogleMaps
+
+%% ===== NIVEL 2 (Container) — usa C4Container correctamente =====
+C4Container
+    title Diagrama de Contenedores — FTGO Platform
+
+    Boundary(ftgo, "FTGO Platform") {
+        Container(api, "API Gateway", "Node.js", "Punto de entrada para clientes")
+        Container(orderSvc, "Order Service", "Java/Spring Boot", "Gestiona pedidos")
+        Container(kitchenSvc, "Kitchen Service", "Java/Spring Boot", "Gestiona tickets de cocina")
+        Container(deliverySvc, "Delivery Service", "Java/Spring Boot", "Gestiona entregas")
+        ContainerDb(orderDb, "Order DB", "PostgreSQL", "Almacena pedidos")
+        Container(kafka, "Apache Kafka", "Kafka", "Cola de mensajes")
+    }
+
+    ContainerExt(mobileApp, "Mobile App", "React Native", "App del consumidor")
+    ContainerExt(stripe, "Stripe", "Externo", "Procesador de pagos")
+
+    Rel(mobileApp, api, "Usa", "HTTPS/JSON")
+    Rel(api, orderSvc, "Redirige")
+    Rel(orderSvc, orderDb, "Lee/Escribe")
+    Rel(orderSvc, kafka, "Publica eventos")
+    Rel(kafka, kitchenSvc, "Consume eventos")
+    Rel(kafka, deliverySvc, "Consume eventos")

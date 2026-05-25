@@ -35,9 +35,26 @@ modulo4-examen-ftgo/
 │   ├── fsd_mejorado.md                     ← Prompt mejorado B.2 — genera FSD
 │   ├── adr_mejorado.md                     ← Prompt mejorado B.3 — genera ADRs
 │   └── c4_mejorado.md                      ← Prompt mejorado B.4 — genera diagramas C4
-└── prompts_sesion/
-    ├── 00_prompt_inicial.md                ← Prompt de apertura de sesión (rol + caso + plan)
-    └── 01_contract.md                      ← Contract de sesión (9 reglas absolutas)
+├── prompts_sesion/
+│   ├── 00_prompt_inicial.md                ← Prompt de apertura de sesión (rol + caso + plan)
+│   └── 01_contract.md                      ← Contract de sesión (9 reglas absolutas)
+└── evidencia/                              ← Salidas reales de las 3 corridas de cada semilla
+    ├── prd/
+    │   ├── c1_semilla_prd.md               ← Corrida C1 (52 %) — 5 stakeholders, 2 NFRs completos, CAP-06/07 incompletos
+    │   ├── c2_semilla_prd.md               ← Corrida C2 (52 %) — sin §5 "fuera del alcance", 1 NFR completo
+    │   └── c3_semilla_prd.md               ← Corrida C3 (71 %) — mejor corrida: 3 NFRs completos, sin Strangler Fig en §5
+    ├── fsd/
+    │   ├── c1_semilla_fsd.md               ← Corrida C1 (43 %) — GWT genérico, solo 5 UCs
+    │   ├── c2_semilla_fsd.md               ← Corrida C2 (29 %) — sin postcondiciones en UC-02
+    │   └── c3_semilla_fsd.md               ← Corrida C3 (57 %) — UC-05 sin tabla de metadatos
+    ├── adr/
+    │   ├── c1_semilla_adr.md               ← Corrida C1 (44 %) — sin consecuencias negativas ni follow-ups
+    │   ├── c2_semilla_adr.md               ← Corrida C2 (38 %) — prosa pura, sin tablas NFR
+    │   └── c3_semilla_adr.md               ← Corrida C3 (56 %) — mejor corrida: 1 negativa + follow-ups
+    └── c4/
+        ├── c1_semilla_c4.mmd               ← Corrida C1 (20 %) — graph TD en ambos niveles, 2 actores
+        ├── c2_semilla_c4.mmd               ← Corrida C2 (27 %) — ContainerExt (no estándar), sin Legacy
+        └── c3_semilla_c4.mmd               ← Corrida C3 (33 %) — C4Context ok pero L2 usa graph TD
 ```
 
 ---
@@ -162,6 +179,10 @@ Indicadores medidos comparando el prompt semilla v0.1 (Anexo B) contra el prompt
 | 14 | README ejecutable | `README.md` | ✅ |
 | 15 | Prompt inicial de sesión | `prompts_sesion/00_prompt_inicial.md` | ✅ |
 | 16 | Contract de sesión (9 reglas) | `prompts_sesion/01_contract.md` | ✅ |
+| 17 | Salidas semilla PRD (3 corridas) | `evidencia/prd/c{1,2,3}_semilla_prd.md` | ✅ |
+| 18 | Salidas semilla FSD (3 corridas) | `evidencia/fsd/c{1,2,3}_semilla_fsd.md` | ✅ |
+| 19 | Salidas semilla ADR (3 corridas) | `evidencia/adr/c{1,2,3}_semilla_adr.md` | ✅ |
+| 20 | Salidas semilla C4 (3 corridas) | `evidencia/c4/c{1,2,3}_semilla_c4.mmd` | ✅ |
 
 ---
 

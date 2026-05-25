@@ -201,13 +201,53 @@ No continúes produciendo contenido más allá de estas condiciones.
 
 **Indicador:** porcentaje de checkpoints correctamente completados en el output.
 
-**Fórmula:** (checkpoints cumplidos / 18 totales) × 100
+**Fórmula:** (UCs correctos / 7) × 100
 
-**Checkpoints:** Intro + tabla + ≥5 UCs + 3 US semilla + ≥2 UCs adicionales con origen + GWT UC-01 + GWT todos + 7 campos por UC + mapeo PRD + sin UCs inventados = 18 puntos.
+**Checkpoint por UC:** 7 campos completos + GWT con estados concretos del dominio FTGO + origen citado = 1 punto por UC correcto.
 
 | Corrida | Prompt semilla v0.1 | Prompt mejorado v0.2 | Δ |
 |---|---|---|---|
-| 1 | 7/18 (39%) | 18/18 (100%) | +61% |
-| 2 | 6/18 (33%) | 18/18 (100%) | +67% |
-| 3 | 11/18 (61%) | 18/18 (100%) | +39% |
-| **Promedio** | **44%** | **100%** | **+56%** |
+| C1 | 3/7 (43 %) | 7/7 (100 %) | +57 % |
+| C2 | 2/7 (29 %) | 7/7 (100 %) | +71 % |
+| C3 | 4/7 (57 %) | 7/7 (100 %) | +43 % |
+| **Promedio** | **43 %** | **100 %** | **+57 %** |
+
+### Detalle de corridas — Semilla v0.1
+
+**Corrida C1 — 3/7 (43 %)**
+
+| UC | 7 campos completos | GWT con estados FTGO | Origen citado | ✓/✗ |
+|---|:---:|:---:|:---:|:---:|
+| UC-01 Tomar pedido | ✅ | ⚠️ GWT genérico ("el sistema confirma el pedido") | ✅ US-01 | ❌ |
+| UC-02 Aceptar/rechazar ticket | ✅ | ⚠️ GWT sin estado ACCEPTED/REJECTED | ✅ US-02 | ❌ |
+| UC-03 Asignar courier | ✅ | ✅ ASSIGNED presente | ✅ US-03 | ✅ |
+| UC-04 Procesar pago | ❌ Flujos alternativos vacíos | ❌ Sin APPROVED/PENDING_PAYMENT | ❌ Sin Richardson Cap. 3 | ❌ |
+| UC-05 Tracking | ✅ | ✅ DELIVERED presente | ❌ Sin origen derivado | ❌ |
+| UC-06 — | ❌ No generado (semilla pide solo ≥5) | — | — | ❌ |
+| UC-07 — | ❌ No generado | — | — | ❌ |
+
+**Corrida C2 — 2/7 (29 %)**
+
+| UC | 7 campos completos | GWT con estados FTGO | Origen citado | ✓/✗ |
+|---|:---:|:---:|:---:|:---:|
+| UC-01 Tomar pedido | ✅ | ✅ PENDING_PAYMENT presente | ✅ US-01 | ✅ |
+| UC-02 Aceptar/rechazar ticket | ❌ Sin postcondiciones | ❌ GWT genérico | ✅ US-02 | ❌ |
+| UC-03 Asignar courier | ✅ | ✅ ASSIGNED presente | ✅ US-03 | ✅ |
+| UC-04 Procesar pago | ❌ Sin FA-02 (timeout) | ❌ Sin estado APPROVED | ❌ | ❌ |
+| UC-05 Tracking | ❌ Sin flujos alternativos | ❌ GWT genérico | ❌ | ❌ |
+| UC-06 — | ❌ No generado | — | — | ❌ |
+| UC-07 — | ❌ No generado | — | — | ❌ |
+
+**Corrida C3 — 4/7 (57 %)**
+
+| UC | 7 campos completos | GWT con estados FTGO | Origen citado | ✓/✗ |
+|---|:---:|:---:|:---:|:---:|
+| UC-01 Tomar pedido | ✅ | ✅ PENDING_PAYMENT + número ORD-XXXX | ✅ US-01 | ✅ |
+| UC-02 Aceptar/rechazar ticket | ✅ | ✅ ACCEPTED, PREPARING | ✅ US-02 | ✅ |
+| UC-03 Asignar courier | ✅ | ✅ ASSIGNED presente | ✅ US-03 | ✅ |
+| UC-04 Procesar pago | ✅ | ✅ APPROVED presente | ❌ Sin cita Richardson Cap. 3 | ❌ |
+| UC-05 Tracking | ❌ Sin tabla de metadatos | ⚠️ GWT parcial | ❌ Sin origen | ❌ |
+| UC-06 — | ❌ No generado | — | — | ❌ |
+| UC-07 — | ❌ No generado | — | — | ❌ |
+
+**Causa raíz de las fallas (semilla B.2):** el TODO 1 vacío hace que el modelo improvise UCs y nunca supere 5 UCs. El TODO 2 vacío (regla de granularidad) produce flujos alternativos convertidos en UCs separados en C1, inflando el conteo sin valor. El TODO 4 vacío (esqueleto) produce GWT sin estados concretos del dominio FTGO (`PENDING_PAYMENT`, `APPROVED`, `ASSIGNED`) en 2 de 3 corridas; los estados usados son "PENDIENTE", "CONFIRMADO" — inventados.
