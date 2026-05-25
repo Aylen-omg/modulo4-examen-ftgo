@@ -30,11 +30,14 @@ modulo4-examen-ftgo/
 │   └── skills/
 │       └── trazabilidad/
 │           └── SKILL.md                    ← Skill Cursor: genera TRAZABILIDAD.md
-└── prompts_mejorados/
-    ├── prd_mejorado.md                     ← Prompt mejorado B.1 — genera PRD
-    ├── fsd_mejorado.md                     ← Prompt mejorado B.2 — genera FSD
-    ├── adr_mejorado.md                     ← Prompt mejorado B.3 — genera ADRs
-    └── c4_mejorado.md                      ← Prompt mejorado B.4 — genera diagramas C4
+├── prompts_mejorados/
+│   ├── prd_mejorado.md                     ← Prompt mejorado B.1 — genera PRD
+│   ├── fsd_mejorado.md                     ← Prompt mejorado B.2 — genera FSD
+│   ├── adr_mejorado.md                     ← Prompt mejorado B.3 — genera ADRs
+│   └── c4_mejorado.md                      ← Prompt mejorado B.4 — genera diagramas C4
+└── prompts_sesion/
+    ├── 00_prompt_inicial.md                ← Prompt de apertura de sesión (rol + caso + plan)
+    └── 01_contract.md                      ← Contract de sesión (9 reglas absolutas)
 ```
 
 ---
@@ -157,6 +160,8 @@ Indicadores medidos comparando el prompt semilla v0.1 (Anexo B) contra el prompt
 | 12 | Prompt mejorado ADR (semilla B.3) | `prompts_mejorados/adr_mejorado.md` | ✅ |
 | 13 | Prompt mejorado C4 (semilla B.4) | `prompts_mejorados/c4_mejorado.md` | ✅ |
 | 14 | README ejecutable | `README.md` | ✅ |
+| 15 | Prompt inicial de sesión | `prompts_sesion/00_prompt_inicial.md` | ✅ |
+| 16 | Contract de sesión (9 reglas) | `prompts_sesion/01_contract.md` | ✅ |
 
 ---
 
