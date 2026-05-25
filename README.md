@@ -40,9 +40,9 @@ modulo4-examen-ftgo/
 │   └── 01_contract.md                      ← Contract de sesión (9 reglas absolutas)
 └── evidencia/                              ← Salidas reales de las 3 corridas de cada semilla
     ├── prd/
-    │   ├── c1_semilla_prd.md               ← Corrida C1 (52 %) — 5 stakeholders, 2 NFRs completos
-    │   ├── c2_semilla_prd.md               ← Corrida C2 (48 %) — sin §5 "fuera del alcance"
-    │   └── c3_semilla_prd.md               ← Corrida C3 (57 %) — sin Strangler Fig en alcance
+    │   ├── c1_semilla_prd.md               ← Corrida C1 (52 %) — 5 stakeholders, 2 NFRs completos, CAP-06/07 incompletos
+    │   ├── c2_semilla_prd.md               ← Corrida C2 (52 %) — sin §5 "fuera del alcance", 1 NFR completo
+    │   └── c3_semilla_prd.md               ← Corrida C3 (71 %) — mejor corrida: 3 NFRs completos, sin Strangler Fig en §5
     ├── fsd/
     │   ├── c1_semilla_fsd.md               ← Corrida C1 (43 %) — GWT genérico, solo 5 UCs
     │   ├── c2_semilla_fsd.md               ← Corrida C2 (29 %) — sin postcondiciones en UC-02

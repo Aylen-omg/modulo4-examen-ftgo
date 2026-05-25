@@ -1,5 +1,5 @@
 # PRD — FTGO Platform
-<!-- Salida de Semilla B.1 · Corrida C2 · Evaluación: 10/21 (48 %) -->
+<!-- Salida de Semilla B.1 · Corrida C2 · Evaluación: 11/21 (52 %) -->
 
 ## 1. Contexto
 

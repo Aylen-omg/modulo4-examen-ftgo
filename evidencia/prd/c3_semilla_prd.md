@@ -1,5 +1,5 @@
 # Documento de Requerimientos de Producto — FTGO
-<!-- Salida de Semilla B.1 · Corrida C3 · Evaluación: 12/21 (57 %) -->
+<!-- Salida de Semilla B.1 · Corrida C3 · Evaluación: 15/21 (71 %) -->
 
 ## 1. Contexto y Objetivos
 

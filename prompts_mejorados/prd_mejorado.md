@@ -200,9 +200,9 @@ NFRs obligatorios a cubrir (en este orden):
 | Corrida | Prompt semilla v0.1 | Prompt mejorado v0.2 | Δ |
 |---|---|---|---|
 | C1 | 11/21 (52 %) | 21/21 (100 %) | +48 % |
-| C2 | 10/21 (48 %) | 21/21 (100 %) | +52 % |
-| C3 | 12/21 (57 %) | 21/21 (100 %) | +43 % |
-| **Promedio** | **52 %** | **100 %** | **+48 %** |
+| C2 | 11/21 (52 %) | 21/21 (100 %) | +48 % |
+| C3 | 15/21 (71 %) | 21/21 (100 %) | +29 % |
+| **Promedio** | **58 %** | **100 %** | **+42 %** |
 
 ### Detalle de corridas — Semilla v0.1
 
@@ -234,7 +234,7 @@ Checkpoints evaluados (21 pts): **5 secciones** + **8 NFRs** (métrica numérica
 | CAP-07 Notifications (párrafo) | ❌ | Solo 1 frase, sin mencionar canal (push/SMS/email) ni condición de disparo |
 | Strangler Fig en §5 Alcance | ❌ | Mencionado en §1 pero ausente en §5 |
 
-**Corrida C2 — 10/21 (48 %)**
+**Corrida C2 — 11/21 (52 %)**
 
 | Checkpoint | Estado | Observación |
 |---|:---:|---|
@@ -243,10 +243,10 @@ Checkpoints evaluados (21 pts): **5 secciones** + **8 NFRs** (métrica numérica
 | §3 Capacidades | ✅ | Presente |
 | §4 NFRs | ✅ | Presente |
 | §5 Alcance con ❌ explícito | ❌ | Sin lista "fuera del alcance" |
-| NFR-01 Latencia | ✅ | Completo |
-| NFR-02 Disponibilidad | ❌ | Menciona "alta disponibilidad" sin 99.9% ni origen |
-| NFR-03 Escalabilidad | ❌ | Ausente como NFR explícito |
-| NFR-04 Tolerancia fallos | ❌ | Ausente |
+| NFR-01 Latencia | ✅ | Completo (200ms p95 + [Brief §A.4] + justificación) |
+| NFR-02 Disponibilidad | ❌ | Presente pero solo dice "alta disponibilidad"; sin 99.9%, sin `[Brief §A.4]` |
+| NFR-03 Escalabilidad | ❌ | Presente ("escalar horizontalmente") pero sin métrica "5×" ni `[Brief §A.4 — Escalabilidad]` |
+| NFR-04 Tolerancia fallos | ❌ | Ausente; NFR-04 del semilla aborda Seguridad/PCI-DSS, no retry/circuit breaker |
 | NFR-05 Consistencia | ❌ | Ausente |
 | NFR-06 Trazabilidad | ❌ | Ausente |
 | NFR-07 Migración | ❌ | Ausente |
@@ -260,7 +260,7 @@ Checkpoints evaluados (21 pts): **5 secciones** + **8 NFRs** (métrica numérica
 | CAP-07 Notifications | ❌ | Fusionada con CAP-06; sin párrafo propio |
 | Strangler Fig en §5 Alcance | ❌ | No aparece en §5 |
 
-**Corrida C3 — 12/21 (57 %)**
+**Corrida C3 — 15/21 (71 %)**
 
 | Checkpoint | Estado | Observación |
 |---|:---:|---|
