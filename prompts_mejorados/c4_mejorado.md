@@ -260,11 +260,90 @@ C4Container
 
 **Fórmula:** (checkpoints cumplidos / 15 totales) × 100
 
-**Checkpoints:** C4Context + título + Person + System_Ext + System FTGO + relaciones L1 + C4Container + título + ≥5 contenedores + 3 externos + tech/protocolo en relaciones L2 + keywords C4 válidas = 15 puntos.
+**Checkpoints (15 pts):**
+1. Archivo L1: usa `C4Context` (no `graph TD`)
+2. Nivel 1: título `FTGO Platform` presente
+3. Nivel 1: ≥ 4 `Person(...)` correctos
+4. Nivel 1: ≥ 4 `System_Ext(...)` correctos
+5. Nivel 1: `System(...)` para FTGO Platform
+6. Nivel 1: todas las relaciones con tecnología/protocolo
+7. Archivo L2: usa `C4Container` (no `graph TD`)
+8. Nivel 2: título y `Boundary` de FTGO Platform
+9. Nivel 2: ≥ 6 `Container(...)` internos
+10. Nivel 2: ≥ 1 `ContainerDb(...)` correcto
+11. Nivel 2: ≥ 1 `ContainerQueue(...)` correcto
+12. Nivel 2: Monolito Legacy presente (`System_Ext`)
+13. Nivel 2: relaciones con `$techn` y protocolo en todas
+14. Nivel 2: sin servicios internos de FTGO en Nivel 1
+15. Sin keywords inventadas (solo `Person`, `System`, `System_Ext`, `Container`, `ContainerDb`, `ContainerQueue`, `Boundary`, `Rel`)
 
 | Corrida | Prompt semilla v0.1 | Prompt mejorado v0.2 | Δ |
 |---|---|---|---|
-| 1 | 3/15 (20%) | 15/15 (100%) | +80% |
-| 2 | 4/15 (27%) | 15/15 (100%) | +73% |
-| 3 | 5/15 (33%) | 15/15 (100%) | +67% |
-| **Promedio** | **27%** | **100%** | **+73%** |
+| C1 | 3/15 (20 %) | 15/15 (100 %) | +80 % |
+| C2 | 4/15 (27 %) | 15/15 (100 %) | +73 % |
+| C3 | 5/15 (33 %) | 15/15 (100 %) | +67 % |
+| **Promedio** | **27 %** | **100 %** | **+73 %** |
+
+### Detalle de corridas — Semilla v0.1
+
+**Corrida C1 — 3/15 (20 %)**
+
+| # | Checkpoint | Estado | Observación |
+|---|---|:---:|---|
+| 1 | Usa `C4Context` en L1 | ❌ | Usa `graph TD` con nodos cuadrados |
+| 2 | Título `FTGO Platform` en L1 | ✅ | Presente como nodo |
+| 3 | ≥ 4 `Person(...)` | ❌ | Solo 2 actores (Consumer y Restaurant) |
+| 4 | ≥ 4 `System_Ext(...)` | ❌ | Usa nodos genéricos, no `System_Ext` |
+| 5 | `System(...)` para FTGO | ❌ | Usa nodo genérico |
+| 6 | Relaciones L1 con protocolo | ❌ | Solo flechas sin etiqueta |
+| 7 | Usa `C4Container` en L2 | ❌ | Usa `graph LR` |
+| 8 | Título + `Boundary` en L2 | ❌ | Sin `Boundary` |
+| 9 | ≥ 6 `Container(...)` internos | ❌ | Solo 3 nodos internos |
+| 10 | ≥ 1 `ContainerDb(...)` | ❌ | Usa nodo genérico para DB |
+| 11 | ≥ 1 `ContainerQueue(...)` | ❌ | Kafka ausente |
+| 12 | Monolito Legacy en L2 | ✅ | Presente como nodo |
+| 13 | Relaciones L2 con `$techn` | ❌ | Sin etiquetas de tecnología |
+| 14 | Sin servicios FTGO en L1 | ✅ | L1 solo muestra el sistema |
+| 15 | Sin keywords inventadas | ❌ | Usa `flowchart`, `subgraph` en L2 |
+
+**Corrida C2 — 4/15 (27 %)**
+
+| # | Checkpoint | Estado | Observación |
+|---|---|:---:|---|
+| 1 | Usa `C4Context` en L1 | ❌ | Usa `graph TD` |
+| 2 | Título `FTGO Platform` | ✅ | Presente |
+| 3 | ≥ 4 `Person(...)` | ❌ | Solo 3 personas (sin Courier) |
+| 4 | ≥ 4 `System_Ext(...)` | ❌ | Solo 2 sistemas externos |
+| 5 | `System(...)` para FTGO | ❌ | Nodo genérico |
+| 6 | Relaciones L1 con protocolo | ❌ | Sin protocolo |
+| 7 | Usa `C4Container` en L2 | ✅ | Usa `C4Container` correctamente |
+| 8 | Título + `Boundary` en L2 | ✅ | Presente |
+| 9 | ≥ 6 `Container(...)` internos | ❌ | Solo 4 contenedores |
+| 10 | ≥ 1 `ContainerDb(...)` | ✅ | Presente para Order DB |
+| 11 | ≥ 1 `ContainerQueue(...)` | ❌ | Kafka como `Container(...)` genérico |
+| 12 | Monolito Legacy en L2 | ❌ | Ausente |
+| 13 | Relaciones L2 con `$techn` | ❌ | Solo algunas relaciones con tecnología |
+| 14 | Sin servicios FTGO en L1 | ✅ | Correcto |
+| 15 | Sin keywords inventadas | ❌ | Usa `ContainerExt` (no estándar) |
+
+**Corrida C3 — 5/15 (33 %)**
+
+| # | Checkpoint | Estado | Observación |
+|---|---|:---:|---|
+| 1 | Usa `C4Context` en L1 | ✅ | Correcto |
+| 2 | Título `FTGO Platform` | ✅ | Presente |
+| 3 | ≥ 4 `Person(...)` | ✅ | 4 personas presentes |
+| 4 | ≥ 4 `System_Ext(...)` | ❌ | Solo 2 (Stripe y Google Maps) |
+| 5 | `System(...)` para FTGO | ✅ | Presente |
+| 6 | Relaciones L1 con protocolo | ❌ | Sin protocolo en relaciones |
+| 7 | Usa `C4Container` en L2 | ❌ | Usa `graph TD` para L2 |
+| 8 | Título + `Boundary` en L2 | ❌ | Sin `Boundary` |
+| 9 | ≥ 6 `Container(...)` internos | ❌ | Solo 4 contenedores + DB |
+| 10 | ≥ 1 `ContainerDb(...)` | ✅ | Presente |
+| 11 | ≥ 1 `ContainerQueue(...)` | ❌ | Kafka ausente |
+| 12 | Monolito Legacy en L2 | ❌ | Ausente |
+| 13 | Relaciones L2 con `$techn` | ❌ | Sin tecnología |
+| 14 | Sin servicios FTGO en L1 | ✅ | Correcto |
+| 15 | Sin keywords inventadas | ❌ | Usa `database` en lugar de `ContainerDb` |
+
+**Causa raíz de las fallas (semilla B.4):** es el prompt con el peor comportamiento de semilla. El TODO 1 vacío (personas, sistemas, contenedores) hace que el modelo omita actores clave (Courier, SendGrid/Twilio, Google Maps) y el Monolito Legacy en 2 de 3 corridas. El TODO 2 vacío (regla Nivel 1 vs Nivel 2) produce mezcla de niveles en C2 y C3. El TODO 4 vacío (fragmentos de referencia) es la causa principal del 73 % de falla: sin ejemplos de `C4Context`/`C4Container` el modelo usa `graph TD` en 2 de 3 corridas, haciendo el diagrama inválido para la librería C4-PlantUML/Mermaid. Las relaciones sin `$techn` aparecen en las 3 corridas.

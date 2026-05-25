@@ -1,0 +1,45 @@
+%% Salida de Semilla B.4 · Corrida C3 · Evaluación: 5/15 (33%)
+%% Checkpoints OK: C4Context en L1 ✓, Título ✓, 4 Person ✓, System FTGO ✓, sin servicios en L1 ✓
+%% Checkpoints fallidos: solo 2 System_Ext (omite SendGrid/Twilio y Monolito Legacy),
+%% relaciones L1 sin protocolo, L2 usa graph TD, sin Boundary, solo 4 contenedores + DB,
+%% Kafka ausente, Monolito Legacy ausente, sin $techn en relaciones L2,
+%% usa "database" en vez de ContainerDb.
+
+%% ===== NIVEL 1 (Context) — C4Context correcto =====
+C4Context
+    title Diagrama de Contexto — FTGO Platform
+
+    Person(consumer, "Consumidor", "Usuario que realiza pedidos de comida")
+    Person(restaurant, "Restaurante", "Establece menú y prepara pedidos")
+    Person(courier, "Repartidor", "Recoge y entrega pedidos")
+    Person(employee, "Empleado FTGO", "Administra la plataforma")
+
+    System(ftgo, "FTGO Platform", "Plataforma de delivery de comida")
+
+    System_Ext(stripe, "Stripe", "Procesador de pagos")
+    System_Ext(googleMaps, "Google Maps", "Servicio de geolocalización")
+
+    Rel(consumer, ftgo, "Realiza pedidos")
+    Rel(restaurant, ftgo, "Gestiona menú y pedidos")
+    Rel(courier, ftgo, "Recibe asignaciones")
+    Rel(employee, ftgo, "Administra")
+    Rel(ftgo, stripe, "Procesa pagos")
+    Rel(ftgo, googleMaps, "Obtiene rutas y distancias")
+
+%% ===== NIVEL 2 (Container) — usa graph TD en vez de C4Container =====
+graph TD
+    subgraph FTGO Platform
+        API[API Gateway]
+        OrderSvc[Order Service - Java/Spring Boot]
+        KitchenSvc[Kitchen Service - Java/Spring Boot]
+        DeliverySvc[Delivery Service - Java/Spring Boot]
+        DB[(Order DB - PostgreSQL)]
+    end
+
+    MobileApp[Mobile App] --> API
+    WebAdmin[Web Admin] --> API
+    API --> OrderSvc
+    API --> KitchenSvc
+    API --> DeliverySvc
+    OrderSvc --> DB
+    KitchenSvc --> DB

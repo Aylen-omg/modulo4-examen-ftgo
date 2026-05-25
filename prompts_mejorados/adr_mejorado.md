@@ -206,11 +206,94 @@ Esqueleto exacto:
 
 **Fórmula:** (checkpoints cumplidos / 16 totales) × 100
 
-**Checkpoints:** 5 secciones + ≥3 opciones con pros/contras/impacto NFR + consecuencias ± + referencia libro/brief + NFRs clave + Strangler Fig + follow-ups = 16 puntos.
+**Checkpoints (16 pts):**
+1. Título + metadatos (Status, Deciders, Date)
+2. §1 Contexto
+3. §2 Opciones evaluadas (≥ 3)
+4. §3 Decisión con justificación
+5. §4 Consecuencias positivas (≥ 2)
+6. §4 Consecuencias negativas (≥ 1)
+7. §5 Follow-ups citando ADR siguiente
+8. Opción A: pros + contras + tabla NFR (✓/✗/⚠️)
+9. Opción B: pros + contras + tabla NFR
+10. Opción C: pros + contras + tabla NFR
+11. NFR-07 Migración mencionado en decisión
+12. Strangler Fig mencionado explícitamente
+13. Richardson citado (Cap. + página o concepto)
+14. Brief citado (`[Brief §A.X]`)
+15. Compatibilidad Strangler Fig evaluada por opción
+16. Sin opciones de paja (cada opción evaluada seriamente)
 
 | Corrida | Prompt semilla v0.1 | Prompt mejorado v0.2 | Δ |
 |---|---|---|---|
-| 1 | 7/16 (44%) | 16/16 (100%) | +56% |
-| 2 | 6/16 (38%) | 16/16 (100%) | +62% |
-| 3 | 9/16 (56%) | 16/16 (100%) | +44% |
-| **Promedio** | **46%** | **100%** | **+54%** |
+| C1 | 7/16 (44 %) | 16/16 (100 %) | +56 % |
+| C2 | 6/16 (38 %) | 16/16 (100 %) | +62 % |
+| C3 | 9/16 (56 %) | 16/16 (100 %) | +44 % |
+| **Promedio** | **46 %** | **100 %** | **+54 %** |
+
+### Detalle de corridas — Semilla v0.1
+
+**Corrida C1 — 7/16 (44 %)**
+
+| # | Checkpoint | Estado | Observación |
+|---|---|:---:|---|
+| 1 | Título + metadatos | ✅ | Presente |
+| 2 | §1 Contexto | ✅ | Presente |
+| 3 | §2 ≥ 3 opciones | ✅ | 3 opciones generadas |
+| 4 | §3 Decisión con justificación | ✅ | Presente |
+| 5 | §4 Consecuencias positivas ≥ 2 | ✅ | 3 puntos positivos presentes |
+| 6 | §4 Consecuencias negativas ≥ 1 | ❌ | Solo consecuencias positivas; la sección termina sin ninguna negativa |
+| 7 | §5 Follow-ups con ADR siguiente | ❌ | Sin follow-ups |
+| 8 | Opción A: pros + contras + tabla NFR | ❌ | Tiene pros y contras pero **sin tabla de impacto NFR** (✓/✗/⚠️) |
+| 9 | Opción B: pros + contras + tabla NFR | ❌ | Tiene 2 pros y 2 contras pero **sin tabla NFR** |
+| 10 | Opción C: pros + contras + tabla NFR | ❌ | Tiene 3 pros y 1 contra pero **sin tabla NFR** |
+| 11 | NFR-07 Migración en decisión | ❌ | No mencionado en la decisión |
+| 12 | Strangler Fig explícito | ✅ | Opción C se titula "Strangler Fig (Migración Híbrida Progresiva)" y la decisión cita "Opción C — Strangler Fig" |
+| 13 | Richardson citado | ❌ | Sin cita |
+| 14 | Brief citado `[Brief §A.X]` | ❌ | Sin cita |
+| 15 | Compatibilidad Strangler Fig por opción | ❌ | No evaluada |
+| 16 | Sin opciones de paja | ✅ | Las 3 opciones son reales |
+
+**Corrida C2 — 6/16 (38 %)**
+
+| # | Checkpoint | Estado | Observación |
+|---|---|:---:|---|
+| 1 | Título + metadatos | ✅ | Presente |
+| 2 | §1 Contexto | ✅ | Presente |
+| 3 | §2 ≥ 3 opciones | ✅ | 3 opciones |
+| 4 | §3 Decisión con justificación | ✅ | Presente |
+| 5 | §4 Consecuencias positivas ≥ 2 | ✅ | 3 puntos positivos |
+| 6 | §4 Consecuencias negativas ≥ 1 | ❌ | Ausente |
+| 7 | §5 Follow-ups | ❌ | Ausente |
+| 8 | Opción A: pros + contras + tabla NFR | ❌ | Solo prosa, sin tabla NFR |
+| 9 | Opción B: pros + contras + tabla NFR | ❌ | Solo prosa |
+| 10 | Opción C: pros + contras + tabla NFR | ❌ | Solo prosa |
+| 11 | NFR-07 Migración en decisión | ❌ | No mencionado |
+| 12 | Strangler Fig explícito | ❌ | No mencionado |
+| 13 | Richardson citado | ❌ | Sin cita |
+| 14 | Brief citado | ❌ | Sin cita |
+| 15 | Compatibilidad Strangler Fig por opción | ❌ | No evaluada |
+| 16 | Sin opciones de paja | ✅ | Las 3 opciones son reales |
+
+**Corrida C3 — 9/16 (56 %)**
+
+| # | Checkpoint | Estado | Observación |
+|---|---|:---:|---|
+| 1 | Título + metadatos | ✅ | Presente |
+| 2 | §1 Contexto | ✅ | Presente |
+| 3 | §2 ≥ 3 opciones | ✅ | 3 opciones |
+| 4 | §3 Decisión con justificación | ✅ | Presente |
+| 5 | §4 Consecuencias positivas ≥ 2 | ✅ | 3 puntos positivos |
+| 6 | §4 Consecuencias negativas ≥ 1 | ✅ | 1 negativa ("complejidad operacional") |
+| 7 | §5 Follow-ups | ✅ | Menciona "definir estrategia de datos" |
+| 8 | Opción A: pros + contras + tabla NFR | ❌ | Sin tabla NFR |
+| 9 | Opción B: pros + contras + tabla NFR | ❌ | Solo prosa |
+| 10 | Opción C: pros + contras + tabla NFR | ❌ | Solo prosa |
+| 11 | NFR-07 Migración en decisión | ✅ | Menciona "18-24 meses" |
+| 12 | Strangler Fig explícito | ✅ | Mencionado en decisión |
+| 13 | Richardson citado | ❌ | Sin cita con Cap. |
+| 14 | Brief citado `[Brief §A.X]` | ❌ | Sin cita formal |
+| 15 | Compatibilidad Strangler Fig por opción | ❌ | No evaluada por opción |
+| 16 | Sin opciones de paja | ✅ | Las 3 opciones son reales |
+
+**Causa raíz de las fallas (semilla B.3):** el TODO 2 vacío (razonamiento estructurado) hace que el modelo eluda las tablas de impacto NFR en las 3 corridas, ya que no se le pide comparar opciones en esa dimensión. El TODO 1 vacío (restricciones) hace que Strangler Fig solo aparezca en C3, no en C1-C2. El TODO 4 vacío (esqueleto) produce formatos completamente distintos entre corridas: prosa en C2, listas en C1, mix en C3. La consecuencia negativa solo aparece en C3 (1/3 corridas) porque sin la restricción explícita el modelo tiende a optimismo editorial.

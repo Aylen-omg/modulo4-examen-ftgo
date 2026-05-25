@@ -199,7 +199,91 @@ NFRs obligatorios a cubrir (en este orden):
 
 | Corrida | Prompt semilla v0.1 | Prompt mejorado v0.2 | Δ |
 |---|---|---|---|
-| 1 | 12/21 (57%) | 21/21 (100%) | +43% |
-| 2 | 7/21 (33%) | 21/21 (100%) | +67% |
-| 3 | 15/21 (71%) | 21/21 (100%) | +29% |
-| **Promedio** | **54%** | **100%** | **+46%** |
+| C1 | 11/21 (52 %) | 21/21 (100 %) | +48 % |
+| C2 | 10/21 (48 %) | 21/21 (100 %) | +52 % |
+| C3 | 12/21 (57 %) | 21/21 (100 %) | +43 % |
+| **Promedio** | **52 %** | **100 %** | **+48 %** |
+
+### Detalle de corridas — Semilla v0.1
+
+Checkpoints evaluados (21 pts): **5 secciones** + **8 NFRs** (métrica numérica + `[Brief §A.4]` + justificación) + **7 CAPs** con ≥ 1 párrafo + **Strangler Fig** en §5 Alcance.
+
+**Corrida C1 — 11/21 (52 %)**
+
+| Checkpoint | Estado | Observación |
+|---|:---:|---|
+| §1 Contexto y objetivos | ✅ | Presente con mención a Richardson Cap. 1 |
+| §2 Stakeholders (tabla) | ✅ | Tabla presente pero solo 5 stakeholders (omite Stripe, Google Maps, SendGrid/Twilio) |
+| §3 Capacidades | ✅ | Sección presente |
+| §4 NFRs | ✅ | Sección presente |
+| §5 Alcance con ❌ explícito | ❌ | Solo lista "dentro del alcance"; sin "fuera del alcance" ni Monolito Legacy |
+| NFR-01 Latencia (≤200ms p95 + origen + justif.) | ✅ | Completo |
+| NFR-02 Disponibilidad (99.9% + origen + justif.) | ✅ | Completo |
+| NFR-03 Escalabilidad (5× + origen + justif.) | ❌ | Presente pero sin métrica numérica ("5×") ni `[Brief §A.4 — Carga]` |
+| NFR-04 Tolerancia fallos (retry + origen + justif.) | ❌ | Presente ("reintentos automáticos") pero sin métrica, sin `[Brief §A.4]` y sin citar Stripe explícitamente |
+| NFR-05 Consistencia (fuerte/eventual + origen) | ❌ | Ausente |
+| NFR-06 Trazabilidad (correlation ID + origen) | ❌ | Ausente |
+| NFR-07 Migración (18-24m + origen + justif.) | ❌ | Ausente |
+| NFR-08 Cumplimiento (PCI-DSS + GDPR + origen) | ❌ | Ausente |
+| CAP-01 Consumer Management (párrafo) | ✅ | Presente |
+| CAP-02 Restaurant Management (párrafo) | ✅ | Presente |
+| CAP-03 Order Taking (párrafo) | ✅ | Presente |
+| CAP-04 Order Fulfillment (párrafo) | ✅ | Presente |
+| CAP-05 Delivery (párrafo) | ✅ | Presente |
+| CAP-06 Billing (párrafo) | ❌ | Solo 1 frase ("Procesamiento de pagos."), sin explicación del mecanismo |
+| CAP-07 Notifications (párrafo) | ❌ | Solo 1 frase, sin mencionar canal (push/SMS/email) ni condición de disparo |
+| Strangler Fig en §5 Alcance | ❌ | Mencionado en §1 pero ausente en §5 |
+
+**Corrida C2 — 10/21 (48 %)**
+
+| Checkpoint | Estado | Observación |
+|---|:---:|---|
+| §1 Contexto y objetivos | ✅ | Presente |
+| §2 Stakeholders | ✅ | 6 stakeholders (omite Google Maps y Equipo de arquitectura) |
+| §3 Capacidades | ✅ | Presente |
+| §4 NFRs | ✅ | Presente |
+| §5 Alcance con ❌ explícito | ❌ | Sin lista "fuera del alcance" |
+| NFR-01 Latencia | ✅ | Completo |
+| NFR-02 Disponibilidad | ❌ | Menciona "alta disponibilidad" sin 99.9% ni origen |
+| NFR-03 Escalabilidad | ❌ | Ausente como NFR explícito |
+| NFR-04 Tolerancia fallos | ❌ | Ausente |
+| NFR-05 Consistencia | ❌ | Ausente |
+| NFR-06 Trazabilidad | ❌ | Ausente |
+| NFR-07 Migración | ❌ | Ausente |
+| NFR-08 Cumplimiento | ❌ | Ausente |
+| CAP-01 Consumer Management | ✅ | Presente |
+| CAP-02 Restaurant Management | ✅ | Presente |
+| CAP-03 Order Taking | ✅ | Presente |
+| CAP-04 Order Fulfillment | ✅ | Presente |
+| CAP-05 Delivery | ✅ | Presente |
+| CAP-06 Billing | ✅ | Presente |
+| CAP-07 Notifications | ❌ | Fusionada con CAP-06; sin párrafo propio |
+| Strangler Fig en §5 Alcance | ❌ | No aparece en §5 |
+
+**Corrida C3 — 12/21 (57 %)**
+
+| Checkpoint | Estado | Observación |
+|---|:---:|---|
+| §1 Contexto y objetivos | ✅ | Presente con Richardson Cap. 1 |
+| §2 Stakeholders | ✅ | 7 stakeholders (omite SendGrid/Twilio) |
+| §3 Capacidades | ✅ | Presente |
+| §4 NFRs | ✅ | Presente |
+| §5 Alcance con ❌ explícito | ✅ | Tiene lista "fuera del alcance" pero omite Monolito Legacy |
+| NFR-01 Latencia | ✅ | Completo (≤200ms p95) |
+| NFR-02 Disponibilidad | ✅ | Completo (99.9%) |
+| NFR-03 Escalabilidad | ✅ | Completo (5×) |
+| NFR-04 Tolerancia fallos | ❌ | Menciona circuit breaker sin retry queue ni origen |
+| NFR-05 Consistencia | ❌ | Ausente |
+| NFR-06 Trazabilidad | ❌ | Ausente |
+| NFR-07 Migración | ❌ | Ausente |
+| NFR-08 Cumplimiento | ❌ | Ausente |
+| CAP-01 Consumer Management | ✅ | Presente |
+| CAP-02 Restaurant Management | ✅ | Presente |
+| CAP-03 Order Taking | ✅ | Presente |
+| CAP-04 Order Fulfillment | ✅ | Presente |
+| CAP-05 Delivery | ✅ | Presente |
+| CAP-06 Billing | ✅ | Presente |
+| CAP-07 Notifications | ✅ | Presente |
+| Strangler Fig en §5 Alcance | ❌ | No aparece en "fuera del alcance" |
+
+**Causa raíz de las fallas (semilla B.1):** el TODO 1 vacío hace que el modelo derive stakeholders con variaciones entre corridas, omitiendo sistemáticamente los sistemas externos (Stripe, Google Maps, SendGrid/Twilio). El TODO 2 vacío produce entre 3-5 NFRs sin el formato `[Brief §A.4 — categoría]`, dejando 5-6 de los 8 NFRs requeridos sin evidencia. La ausencia de Stop condition cuantitativa (TODO 3) hace que el modelo no genere los 8 NFRs. La ausencia de esqueleto (TODO 4) produce NFRs sin Justificación en 2 de 3 corridas.
